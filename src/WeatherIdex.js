@@ -13,89 +13,102 @@ class WeatherIdex extends Component {
         main: '',
         forecastGroup: [],
         className: 'bgImg',
-        errormsg: null,
+        timeInterval: null,
     }
 
     fetchweatherUpdate = async () => {
-            this.setState({ loading: true });
-            const res = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${this.state.city},${this.state.country}&appid=c768480df4e7ec64901ea68f0e5fda9c`)
-            const data = await res.json();
-            this.setState({ loading: false });
-             
-            if(res.status !== 200){
-                throw data;
-            }
-            
-            this.setState({ data: data, weather: data.weather, main: data.main });
+        this.setState({ loading: true });
+        const res = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${this.state.city},${this.state.country}&appid=c768480df4e7ec64901ea68f0e5fda9c`)
+        const data = await res.json();
+        this.setState({ loading: false });
+
+        if (res.status !== 200) {
+            throw data;
+        }
+
+        this.setState({ data: data, weather: data.weather, main: data.main });
     }
 
     forecast = async () => {
 
-            let res = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${this.state.city},${this.state.country}&appid=c768480df4e7ec64901ea68f0e5fda9c`)
-            let forecast = await res.json();
-            if(res.status !== 200){
-                throw forecast;
-            }
-            var forecastGroup = groupBy(forecast.list, (li) => {
-                return moment(new Date(li.dt * 1000)).startOf('day').format();
-            });
-            let forecasts = [];
-            for (let key in forecastGroup) {
-                forecasts.push({ [key]: forecastGroup[key] })
-            }
-            this.setState({ forecastGroup: forecasts });
-       
+        let res = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${this.state.city},${this.state.country}&appid=c768480df4e7ec64901ea68f0e5fda9c`)
+        let forecast = await res.json();
+        if (res.status !== 200) {
+            throw forecast;
+        }
+        var forecastGroup = groupBy(forecast.list, (li) => {
+            return moment(new Date(li.dt * 1000)).startOf('day').format();
+        });
+        let forecasts = [];
+        for (let key in forecastGroup) {
+            forecasts.push({ [key]: forecastGroup[key] })
+        }
+        this.setState({ forecastGroup: forecasts });
+
 
     }
 
 
     componentDidMount = async () => {
-        try{
-        await this.fetchweatherUpdate();
-        await this.forecast();
-        await this.timesloat();
+        try {
+            await this.fetchweatherUpdate();
+            await this.forecast();
+            await this.timesloat();
         }
-        catch(err){
+        catch (err) {
             console.log(err);
-            
+
         }
     }
 
     handleChange = event => this.setState({ [event.target.name]: event.target.value })
 
-    handleSubmit = async(event) => {
+    handleSubmit = async (event) => {
         event.preventDefault();
-        try{
-        if (this.state.city && this.state.country) {
-            await this.fetchweatherUpdate();
-            await this.forecast();
-            this.setState({errormsg: ''})
+        try {
+            if (this.state.city && this.state.country) {
+                await this.fetchweatherUpdate();
+                await this.forecast();
+                this.setState({ errormsg: '' })
+            }
+        }
+        catch (err) {
+            // console.log(err)
+            this.setState({ errormsg: err.message, city: 'Lahore', country: 'Pakistan' })
+
         }
     }
-    catch(err){
-        // console.log(err)
-        this.setState({errormsg : err.message, city: 'Lahore', country:'Pakistan'})
-         
-    }
-    }
 
-    timesloat =async () => {
-        let date =await moment().format('hh:mm A');
-        let exectTime = '03:32 PM'
-        if (date === exectTime) {
-             
-            this.setState({ className: 'bgNight' })
+    timesloat = async () => {
+        try {
+            console.log('called')
+            let date = new Date()
+            const hours = date.getHours()
+            if (hours < 5 || hours >= 19) {
+                this.setState({ className: "bgNight", color: 'white' })
+            }
+            else if (hours >= 5) {
+                console.log('day');
+                this.setState({ className: "bgImg" })
+            }
+
+        } catch (error) {
+            console.log(error)
         }
+        setInterval(() => {
+            this.timesloat()
+        }, 60000 * 60 * 5);
 
     }
+
 
 
 
     render() {
         return (
             <>
-                <div className={this.state.className} id='header'>
-                    <h1 className="text-center pt-5 h-color-small">Weather App</h1>
+                <div className={this.state.className} id='header' style={{color: this.state.color}}>
+                    <h1 className="text-center pt-5 h-color-small" id="heading">Weather App</h1>
                     <h5 className="text-center h-color-small">Search for weather updates</h5>
                     <p className="text-center mb-0 pb-5 h-color-small" style={{ "textTransform": "uppercase" }}>{this.state.city},{this.state.country}</p>
                 </div>
