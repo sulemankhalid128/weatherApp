@@ -123,9 +123,9 @@ class WeatherCard extends Component {
                                                 let keys = Object.keys(forcast);
                                                 return <tbody key={index}>
                                                     <tr >
-                                                        <td className="border-0">
-                                                            <h6 className="my-3"> {new Date(keys[0]).toDateString()} </h6>
-                                                        </td>
+                                                        <th className="border-0">
+                                                            <h6 className="my-3 dateforcast"> {new Date(keys[0]).toDateString()} </h6>
+                                                        </th>
                                                     </tr>
                                                     <tr>
                                                         <th>Time</th>
@@ -133,9 +133,9 @@ class WeatherCard extends Component {
                                                         <th>Humidity</th>
                                                         <th>Weather</th>
                                                         <th>Description</th>
+                                                        <th>Icon</th>
                                                         <th>Max Temp</th>
                                                         <th>Min Temp</th>
-                                                        <th>Degree</th>
                                                         <th>Pressure</th>
                                                         <th>Temp KF</th>
                                                         <th>Clouds</th>
@@ -150,9 +150,9 @@ class WeatherCard extends Component {
                                                                         <td className="text-center">{v.main.humidity}</td>
                                                                         <td>{v.weather[0].main}</td>
                                                                         <td>{v.weather[0].description}</td>
+                                                                        <td><img src={`http://openweathermap.org/img/wn/${v.weather[0].icon}@2x.png`} width="40px" alt=""/> </td>
                                                                         <td className="text-center">{Math.round(v.main.temp_max - 273.15)} &#8451;</td>
                                                                         <td className="text-center">{Math.round(v.main.temp_min - 273.15)} &#8451;</td>
-                                                                        <td className="text-center">{Math.round(v.wind.deg)}</td>
                                                                         <td className="text-center">{Math.round(v.main.pressure)}</td>
                                                                         <td className="text-center">{v.main.temp_kf}</td>
                                                                         <td className="text-center">{v.clouds.all}</td>

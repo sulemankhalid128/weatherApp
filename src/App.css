@@ -28,6 +28,13 @@
     background-origin: content-box;
 }
 
+.bgNight{
+    background-image: url('./assests/Weather-Desktop-Wallpapers.jpg');
+    background-repeat: no-repeat;
+    background-size: auto;
+    background-origin: content-box;
+}
+
 
 .scroller {
     float: left;
@@ -71,4 +78,15 @@
     background-color: grey;
     border: 2px solid grey;
     border-radius: 10px;
+  }
+
+
+  .dateforcast{
+      width: 113px !important;
+  }
+
+  @media screen and (max-width: 740px){
+      .h-color-small{
+        color : white !important;
+      }
   }
