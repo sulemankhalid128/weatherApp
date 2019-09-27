@@ -21,7 +21,7 @@ class WeatherIdex extends Component {
             const res = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${this.state.city},${this.state.country}&appid=c768480df4e7ec64901ea68f0e5fda9c`)
             const data = await res.json();
             this.setState({ loading: false });
-            debugger
+             
             if(res.status !== 200){
                 throw data;
             }
@@ -73,9 +73,9 @@ class WeatherIdex extends Component {
         }
     }
     catch(err){
-        console.log(err)
-        this.setState({errormsg : err.message})
-        debugger
+        // console.log(err)
+        this.setState({errormsg : err.message, city: 'Lahore', country:'Pakistan'})
+         
     }
     }
 
@@ -83,7 +83,7 @@ class WeatherIdex extends Component {
         let date =await moment().format('hh:mm A');
         let exectTime = '03:32 PM'
         if (date === exectTime) {
-            debugger
+             
             this.setState({ className: 'bgNight' })
         }
 

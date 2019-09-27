@@ -102,13 +102,13 @@ class WeatherCard extends Component {
                                     <small className="text-danger" style={{"textTransform": "uppercase"}}>{this.props.error}</small>
                                     {
                                         this.props.country && this.props.city ?
-                                            <button className="btn btn-success mt-3 float-right mb-4" id="updateCheck" onClick={this.props.handleSubmit}>
+                                            <button className="btn btn-success mt-3 float-right mb-4"  onClick={this.props.handleSubmit}>
                                                 {
                                                     this.props.loading ? 'Fetching...' :
                                                         'Update Weather'
                                                 }
                                             </button> :
-                                            <button className="btn btn-success mt-3 float-right mb-4" id="updateCheck" disabled={true} >Update Weather</button>
+                                            <button className="btn btn-primary mt-3 float-right mb-4"  disabled={true} >Update Weather</button>
                                     }
                                 </form>
 
@@ -132,12 +132,12 @@ class WeatherCard extends Component {
                                                                 </th>
                                                             </tr>
                                                             <tr>
-                                                                <th>Time</th>
-                                                                <th>Wind</th>
-                                                                <th>Humidity</th>
                                                                 <th>Weather</th>
                                                                 <th>Description</th>
                                                                 <th>Icon</th>
+                                                                <th>Time</th>
+                                                                <th>Wind</th>
+                                                                <th>Humidity</th>
                                                                 <th>Max Temp</th>
                                                                 <th>Min Temp</th>
                                                                 <th>Pressure</th>
@@ -149,12 +149,12 @@ class WeatherCard extends Component {
                                                                     return <tr key={index}>
                                                                         {
                                                                             <>
-                                                                                <td>{moment(v.dt * 1000).format('hh:mm A')}</td>
-                                                                                <td>{v.wind.speed}</td>
-                                                                                <td className="text-center">{v.main.humidity}</td>
                                                                                 <td>{v.weather[0].main}</td>
                                                                                 <td>{v.weather[0].description}</td>
                                                                                 <td><img src={`http://openweathermap.org/img/wn/${v.weather[0].icon}@2x.png`} width="40px" alt="" /> </td>
+                                                                                <td>{moment(v.dt * 1000).format('hh:mm A')}</td>
+                                                                                <td>{v.wind.speed}</td>
+                                                                                <td className="text-center">{v.main.humidity}</td>
                                                                                 <td className="text-center">{Math.round(v.main.temp_max - 273.15)} &#8451;</td>
                                                                                 <td className="text-center">{Math.round(v.main.temp_min - 273.15)} &#8451;</td>
                                                                                 <td className="text-center">{Math.round(v.main.pressure)}</td>
