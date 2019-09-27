@@ -12,29 +12,30 @@ class WeatherIdex extends Component {
         weather: [],
         main: '',
         forecastGroup: [],
-        className: 'bgImg'
+        className: 'bgImg',
+        errormsg: null,
     }
 
     fetchweatherUpdate = async () => {
-        try {
             this.setState({ loading: true });
             const res = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${this.state.city},${this.state.country}&appid=c768480df4e7ec64901ea68f0e5fda9c`)
             const data = await res.json();
             this.setState({ loading: false });
+            debugger
+            if(res.status !== 200){
+                throw data;
+            }
+            
             this.setState({ data: data, weather: data.weather, main: data.main });
-
-        } catch (error) {
-            this.setState({ loading: false });
-            console.log(error)
-        }
-
     }
 
     forecast = async () => {
 
-        try {
             let res = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${this.state.city},${this.state.country}&appid=c768480df4e7ec64901ea68f0e5fda9c`)
             let forecast = await res.json();
+            if(res.status !== 200){
+                throw forecast;
+            }
             var forecastGroup = groupBy(forecast.list, (li) => {
                 return moment(new Date(li.dt * 1000)).startOf('day').format();
             });
@@ -43,28 +44,39 @@ class WeatherIdex extends Component {
                 forecasts.push({ [key]: forecastGroup[key] })
             }
             this.setState({ forecastGroup: forecasts });
-        } catch (error) {
-            debugger
-            console.log(error)
-        }
+       
 
     }
 
 
     componentDidMount = async () => {
-        this.fetchweatherUpdate();
-        this.forecast();
-        this.timesloat();
+        try{
+        await this.fetchweatherUpdate();
+        await this.forecast();
+        await this.timesloat();
+        }
+        catch(err){
+            console.log(err);
+            
+        }
     }
 
     handleChange = event => this.setState({ [event.target.name]: event.target.value })
 
-    handleSubmit = (event) => {
+    handleSubmit = async(event) => {
         event.preventDefault();
+        try{
         if (this.state.city && this.state.country) {
-            this.fetchweatherUpdate();
-            this.forecast();
+            await this.fetchweatherUpdate();
+            await this.forecast();
+            this.setState({errormsg: ''})
         }
+    }
+    catch(err){
+        console.log(err)
+        this.setState({errormsg : err.message})
+        debugger
+    }
     }
 
     timesloat =async () => {
@@ -97,6 +109,7 @@ class WeatherIdex extends Component {
                     city={this.state.city}
                     handleChange={this.handleChange}
                     handleSubmit={this.handleSubmit}
+                    error={this.state.errormsg}
                 />
             </>
         );

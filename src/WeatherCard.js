@@ -15,25 +15,28 @@ class WeatherCard extends Component {
                                 <Row>
                                     {this.props.data && !this.props.loading &&
                                         <>
-                                            <Col md="3" sm="4" xs="4">
-                                                {this.props.weather && this.props.weather.length ?
-                                                    <img src={`http://openweathermap.org/img/wn/${this.props.weather[0].icon}@2x.png`} alt="" />
-                                                    : 'Loading'
-                                                }
+                                            {this.props.weather && this.props.weather.length ?
+                                                <>
+                                                    <Col md="3" sm="4" xs="4">
+                                                        <img src={`http://openweathermap.org/img/wn/${this.props.weather[0].icon}@2x.png`} alt="" />
 
-                                            </Col>
-                                            <Col md="9" sm="8" xs="8">
-                                                <div className="mt-3">
-                                                    <div>
-                                                        <b>{this.props.weather[0].main}</b> &nbsp;
-                                                <sub>{this.props.weather[0].description}</sub>
-                                                    </div>
-                                                    <div>
-                                                        <b>Temprature:</b> {Math.round(this.props.main.temp - 273.15)}&#8451;
-                                            </div>
-                                                    <p>{new Date().toLocaleString()}</p>
-                                                </div>
-                                            </Col>
+                                                    </Col>
+                                                    <Col md="9" sm="8" xs="8">
+                                                        <div className="mt-3">
+                                                            <div>
+                                                                <b>{this.props.weather[0].main}</b> &nbsp;
+                                                            <sub>{this.props.weather[0].description}</sub>
+                                                            </div>
+                                                            <div>
+                                                                <b>Temprature:</b> {Math.round(this.props.main.temp - 273.15)}&#8451;
+                                                        </div>
+                                                            <p>{new Date().toLocaleString()}</p>
+                                                        </div>
+                                                    </Col>
+                                                </>
+                                                : 'Loading'
+
+                                            }
                                             <Col md="12">
                                                 <Table className="table-responsive">
                                                     <thead>
@@ -96,6 +99,7 @@ class WeatherCard extends Component {
                                         className="form-control"
                                         onChange={this.props.handleChange}
                                     />
+                                    <small className="text-danger" style={{"textTransform": "uppercase"}}>{this.props.error}</small>
                                     {
                                         this.props.country && this.props.city ?
                                             <button className="btn btn-success mt-3 float-right mb-4" id="updateCheck" onClick={this.props.handleSubmit}>
@@ -115,67 +119,67 @@ class WeatherCard extends Component {
                                 <h4 className="mb-4">Forecast</h4>
                                 <div className="scroller">
                                     <div className="force-overflow">
-                                    <Table className="table-responsive w-100">
-                                    {
-                                        this.props.forecastGroup.length ?
+                                        <Table className="table-responsive w-100">
+                                            {
+                                                this.props.forecastGroup.length ?
 
-                                            this.props.forecastGroup.map((forcast, index) => {
-                                                let keys = Object.keys(forcast);
-                                                return <tbody key={index}>
-                                                    <tr >
-                                                        <th className="border-0">
-                                                            <h6 className="my-3 dateforcast"> {new Date(keys[0]).toDateString()} </h6>
-                                                        </th>
-                                                    </tr>
-                                                    <tr>
-                                                        <th>Time</th>
-                                                        <th>Wind</th>
-                                                        <th>Humidity</th>
-                                                        <th>Weather</th>
-                                                        <th>Description</th>
-                                                        <th>Icon</th>
-                                                        <th>Max Temp</th>
-                                                        <th>Min Temp</th>
-                                                        <th>Pressure</th>
-                                                        <th>Temp KF</th>
-                                                        <th>Clouds</th>
-                                                    </tr>
-                                                    {
-                                                        forcast[keys[0]].map((v, index) => {
-                                                            return <tr key={index}>
-                                                                {
-                                                                    <>
-                                                                        <td>{moment(v.dt * 1000).format('hh:mm A')}</td>
-                                                                        <td>{v.wind.speed}</td>
-                                                                        <td className="text-center">{v.main.humidity}</td>
-                                                                        <td>{v.weather[0].main}</td>
-                                                                        <td>{v.weather[0].description}</td>
-                                                                        <td><img src={`http://openweathermap.org/img/wn/${v.weather[0].icon}@2x.png`} width="40px" alt=""/> </td>
-                                                                        <td className="text-center">{Math.round(v.main.temp_max - 273.15)} &#8451;</td>
-                                                                        <td className="text-center">{Math.round(v.main.temp_min - 273.15)} &#8451;</td>
-                                                                        <td className="text-center">{Math.round(v.main.pressure)}</td>
-                                                                        <td className="text-center">{v.main.temp_kf}</td>
-                                                                        <td className="text-center">{v.clouds.all}</td>
-
-
-                                                                    </>
-                                                                }
+                                                    this.props.forecastGroup.map((forcast, index) => {
+                                                        let keys = Object.keys(forcast);
+                                                        return <tbody key={index}>
+                                                            <tr >
+                                                                <th className="border-0">
+                                                                    <h6 className="my-3 dateforcast"> {new Date(keys[0]).toDateString()} </h6>
+                                                                </th>
                                                             </tr>
-                                                        })
-                                                    }
-                                                </tbody>
-                                            })
+                                                            <tr>
+                                                                <th>Time</th>
+                                                                <th>Wind</th>
+                                                                <th>Humidity</th>
+                                                                <th>Weather</th>
+                                                                <th>Description</th>
+                                                                <th>Icon</th>
+                                                                <th>Max Temp</th>
+                                                                <th>Min Temp</th>
+                                                                <th>Pressure</th>
+                                                                <th>Temp KF</th>
+                                                                <th>Clouds</th>
+                                                            </tr>
+                                                            {
+                                                                forcast[keys[0]].map((v, index) => {
+                                                                    return <tr key={index}>
+                                                                        {
+                                                                            <>
+                                                                                <td>{moment(v.dt * 1000).format('hh:mm A')}</td>
+                                                                                <td>{v.wind.speed}</td>
+                                                                                <td className="text-center">{v.main.humidity}</td>
+                                                                                <td>{v.weather[0].main}</td>
+                                                                                <td>{v.weather[0].description}</td>
+                                                                                <td><img src={`http://openweathermap.org/img/wn/${v.weather[0].icon}@2x.png`} width="40px" alt="" /> </td>
+                                                                                <td className="text-center">{Math.round(v.main.temp_max - 273.15)} &#8451;</td>
+                                                                                <td className="text-center">{Math.round(v.main.temp_min - 273.15)} &#8451;</td>
+                                                                                <td className="text-center">{Math.round(v.main.pressure)}</td>
+                                                                                <td className="text-center">{v.main.temp_kf}</td>
+                                                                                <td className="text-center">{v.clouds.all}</td>
 
-                                            :
-                                            <tbody>
-                                                <tr>
-                                                    <td>
-                                                        'Loading...'
+
+                                                                            </>
+                                                                        }
+                                                                    </tr>
+                                                                })
+                                                            }
+                                                        </tbody>
+                                                    })
+
+                                                    :
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>
+                                                                'Loading...'
                                                     </td>
-                                                </tr>
-                                            </tbody>
-                                    }
-                                </Table>
+                                                        </tr>
+                                                    </tbody>
+                                            }
+                                        </Table>
                                     </div>
                                 </div>
                             </Col>
