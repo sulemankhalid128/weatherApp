@@ -6,7 +6,7 @@ import WeatherIdex from './WeatherIdex';
 
 function App() {
   return (
-    <Container className=" p-0">
+    <Container>
         <WeatherIdex></WeatherIdex>
     </Container>
   );

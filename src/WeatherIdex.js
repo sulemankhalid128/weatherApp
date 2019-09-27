@@ -68,10 +68,10 @@ class WeatherIdex extends Component {
     render() {
         return (
             <>
-                <div className="pt-5 bgImg">
-                    <h1 className="text-center mt-3">Weather App</h1>
+                <div className="bgImg">
+                    <h1 className="text-center pt-5">Weather App</h1>
                     <h5 className="text-center">Search for weather updates</h5>
-                    <p className="text-center mb-0 pb-3" style={{ "textTransform": "uppercase" }}>{this.state.city},{this.state.country}</p>
+                    <p className="text-center mb-0 pb-5" style={{ "textTransform": "uppercase" }}>{this.state.city},{this.state.country}</p>
                 </div>
                 <WeatherCard
                     forecastGroup={this.state.forecastGroup}
