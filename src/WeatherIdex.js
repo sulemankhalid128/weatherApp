@@ -86,7 +86,7 @@ class WeatherIdex extends Component {
             console.log('night')
             let hours = new Date().getHours()
             debugger
-            if (hours < 5 || hours >= 19) {
+            if (hours < 6 || hours >= 18) {
                 this.setState({ className: "bgNight", color: 'white' })
             }
             else if (hours >= 5) {
