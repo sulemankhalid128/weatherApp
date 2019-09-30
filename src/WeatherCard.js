@@ -1,34 +1,36 @@
 import React, { Component } from 'react';
 import { Row, Col, Table, Card } from 'react-bootstrap';
 import moment from 'moment';
+import WeatherForm from './WeatherForm';
+import emptyImg from './assests/Error-b.png'
+import emptyCloud from './assests/empty-cloud.svg'
 
 
 class WeatherCard extends Component {
     render() {
-
+        let { data, loading, weather, main, forecastGroup } = this.props
         return (
             <div>
-                <Card className="border-0 shadow">
+                <Card className="border-0 shadow-sm">
                     <div className="card-body">
                         <Row className="border-bottom mb">
                             <Col md="6">
                                 <Row>
-                                    {this.props.data && !this.props.loading &&
+                                    {data && !loading &&
                                         <>
-                                            {this.props.weather && this.props.weather.length ?
+                                            {weather && weather.length ?
                                                 <>
                                                     <Col md="3" sm="4" xs="4">
-                                                        <img src={`http://openweathermap.org/img/wn/${this.props.weather[0].icon}@2x.png`} alt="" />
-
+                                                        <img src={`http://openweathermap.org/img/wn/${weather[0].icon}@2x.png`} alt="" />
                                                     </Col>
                                                     <Col md="9" sm="8" xs="8">
                                                         <div className="mt-3">
                                                             <div>
-                                                                <b>{this.props.weather[0].main}</b> &nbsp;
-                                                            <sub>{this.props.weather[0].description}</sub>
+                                                                <b>{weather[0].main}</b> &nbsp;
+                                                            <sub>{weather[0].description}</sub>
                                                             </div>
                                                             <div>
-                                                                <b>Temprature:</b> {Math.round(this.props.main.temp - 273.15)}&#8451;
+                                                                <b>Temprature:</b> {Math.round(main.temp - 273.15)}&#8451;
                                                         </div>
                                                             <p>{new Date().toLocaleString()}</p>
                                                         </div>
@@ -51,12 +53,12 @@ class WeatherCard extends Component {
                                                     </thead>
                                                     <tbody>
                                                         <tr>
-                                                            <td>{this.props.data.wind.speed}</td>
-                                                            <td>{this.props.main.humidity}</td>
-                                                            <td>{Math.round(this.props.main.temp_max - 273.15)}&#8451;</td>
-                                                            <td>{Math.round(this.props.main.temp_min - 273.15)}&#8451;</td>
-                                                            <td>{this.props.data.coord.lon}</td>
-                                                            <td>{this.props.data.coord.lat}</td>
+                                                            <td className="text-center">{data.wind.speed}</td>
+                                                            <td className="text-center">{main.humidity}</td>
+                                                            <td className="text-center">{Math.round(main.temp_max - 273.15)}&#8451;</td>
+                                                            <td className="text-center">{Math.round(main.temp_min - 273.15)}&#8451;</td>
+                                                            <td>{data.coord.lon}</td>
+                                                            <td>{data.coord.lat}</td>
                                                         </tr>
                                                     </tbody>
                                                 </Table>
@@ -67,51 +69,28 @@ class WeatherCard extends Component {
 
                                     }
                                     <>
-                                        {this.props.loading ?
-
-                                            <div className="d-flex justify-content-center aligh-item-center w-100 mt-5 pt-5">
-                                                <div className="spinner-border" role="status">
-                                                    <span className="sr-only">Loading...</span>
+                                        {loading ?
+                                            <>
+                                                <div className="d-flex justify-content-center aligh-item-center w-100 mt-5 pt-5">
+                                                    <div className="spinner-border" role="status">
+                                                        <span className="sr-only">Loading...</span>
+                                                    </div>
                                                 </div>
-                                            </div> : ''
+                                            </>
+                                            : ''
+
                                         }
                                     </>
-
+                                    {!data && !loading?
+                                        <>
+                                            <div className="justify-content-center d-flex"><img src={emptyImg} alt="" style={{ "width": "50%" }} /></div>
+                                            <div className="justify-content-center d-flex w-100"><h5>Check Your Conction and Try Again</h5></div>
+                                        </>
+                                        : ''}
                                 </Row>
                             </Col>
                             <Col md="6  border-left">
-                                <form>
-                                    <label htmlFor="" className="form-group">Country</label>
-                                    <input type="text"
-                                        name="country"
-                                        value={this.props.country}
-
-                                        placeholder="Enter Country Name"
-                                        className="form-control"
-                                        onChange={this.props.handleChange}
-
-                                    />
-                                    <label htmlFor="" className="form-group mt-3">City</label>
-                                    <input type="text"
-                                        name="city"
-                                        value={this.props.city}
-                                        placeholder="Enter city Name"
-                                        className="form-control"
-                                        onChange={this.props.handleChange}
-                                    />
-                                    <small className="text-danger" style={{"textTransform": "uppercase"}}>{this.props.error}</small>
-                                    {
-                                        this.props.country && this.props.city ?
-                                            <button className="btn btn-success mt-3 float-right mb-4"  onClick={this.props.handleSubmit}>
-                                                {
-                                                    this.props.loading ? 'Fetching...' :
-                                                        'Update Weather'
-                                                }
-                                            </button> :
-                                            <button className="btn btn-primary mt-3 float-right mb-4"  disabled={true} >Update Weather</button>
-                                    }
-                                </form>
-
+                                <WeatherForm props={this.props} />
                             </Col>
                         </Row>
                         <Row className="mt-4">
@@ -121,9 +100,9 @@ class WeatherCard extends Component {
                                     <div className="force-overflow">
                                         <Table className="table-responsive w-100">
                                             {
-                                                this.props.forecastGroup.length ?
+                                                forecastGroup.length ?
 
-                                                    this.props.forecastGroup.map((forcast, index) => {
+                                                    forecastGroup.map((forcast, index) => {
                                                         let keys = Object.keys(forcast);
                                                         return <tbody key={index}>
                                                             <tr >
@@ -174,8 +153,10 @@ class WeatherCard extends Component {
                                                     <tbody>
                                                         <tr>
                                                             <td>
-                                                                'Loading...'
-                                                    </td>
+                                                                <img src={emptyCloud} alt="" style={{ 'width': '80%' }} />
+                                                                <h6>There is no any forcast</h6>
+
+                                                            </td>
                                                         </tr>
                                                     </tbody>
                                             }

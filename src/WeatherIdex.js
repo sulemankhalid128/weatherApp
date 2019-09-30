@@ -3,17 +3,16 @@ import WeatherCard from './WeatherCard';
 import { groupBy } from 'lodash';
 import moment from 'moment';
 
+
 class WeatherIdex extends Component {
     state = {
-        country: 'pakistan',
+        country: 'pakistan (additonal)',
         city: 'Lahore',
         loading: false,
         data: null,
         weather: [],
         main: '',
         forecastGroup: [],
-        className: 'bgImg',
-        timeInterval: null,
     }
 
     fetchweatherUpdate = async () => {
@@ -35,6 +34,7 @@ class WeatherIdex extends Component {
         let forecast = await res.json();
         if (res.status !== 200) {
             throw forecast;
+
         }
         var forecastGroup = groupBy(forecast.list, (li) => {
             return moment(new Date(li.dt * 1000)).startOf('day').format();
@@ -51,12 +51,14 @@ class WeatherIdex extends Component {
 
     componentDidMount = async () => {
         try {
+            this.timesloat();
             await this.fetchweatherUpdate();
             await this.forecast();
-            await this.timesloat();
         }
         catch (err) {
             console.log(err);
+            this.setState({ errormsg: err.message, city: 'Lahore', country: 'Pakistan (addition)' })
+            this.setState({ loading: false })
 
         }
     }
@@ -74,16 +76,16 @@ class WeatherIdex extends Component {
         }
         catch (err) {
             // console.log(err)
-            this.setState({ errormsg: err.message, city: 'Lahore', country: 'Pakistan' })
+            this.setState({ errormsg: err.message, city: 'Lahore', country: 'Pakistan (addition)' })
 
         }
     }
 
     timesloat = async () => {
         try {
-            console.log('called')
-            let date = new Date()
-            const hours = date.getHours()
+            console.log('night')
+            let hours = new Date().getHours()
+            debugger
             if (hours < 5 || hours >= 19) {
                 this.setState({ className: "bgNight", color: 'white' })
             }
@@ -105,24 +107,25 @@ class WeatherIdex extends Component {
 
 
     render() {
+        let { className, color, city, country, forecastGroup, data, weather, main, loading, errormsg } = this.state
         return (
             <>
-                <div className={this.state.className} id='header' style={{color: this.state.color}}>
+                <div className={className} id='header' style={{ color: color }}>
                     <h1 className="text-center pt-5 h-color-small" id="heading">Weather App</h1>
                     <h5 className="text-center h-color-small">Search for weather updates</h5>
-                    <p className="text-center mb-0 pb-5 h-color-small" style={{ "textTransform": "uppercase" }}>{this.state.city},{this.state.country}</p>
+                    <p className="text-center mb-0 pb-5 h-color-small" style={{ "textTransform": "uppercase" }}>{city}</p>
                 </div>
                 <WeatherCard
-                    forecastGroup={this.state.forecastGroup}
-                    data={this.state.data}
-                    weather={this.state.weather}
-                    main={this.state.main}
-                    country={this.state.country}
-                    loading={this.state.loading}
-                    city={this.state.city}
+                    forecastGroup={forecastGroup}
+                    data={data}
+                    weather={weather}
+                    main={main}
+                    country={country}
+                    loading={loading}
+                    city={city}
                     handleChange={this.handleChange}
                     handleSubmit={this.handleSubmit}
-                    error={this.state.errormsg}
+                    error={errormsg}
                 />
             </>
         );
