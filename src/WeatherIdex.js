@@ -29,9 +29,10 @@ class WeatherIdex extends Component {
     }
 
     forecast = async () => {
-
+        this.setState({loading: true})
         let res = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${this.state.city},${this.state.country}&appid=c768480df4e7ec64901ea68f0e5fda9c`)
         let forecast = await res.json();
+        this.setState({loading: false})
         if (res.status !== 200) {
             throw forecast;
 
@@ -85,8 +86,7 @@ class WeatherIdex extends Component {
         try {
             console.log('night')
             let hours = new Date().getHours()
-            debugger
-            if (hours < 6 || hours >= 18) {
+            if (hours < 5 || hours >= 18) {
                 this.setState({ className: "bgNight", color: 'white' })
             }
             else if (hours >= 5) {

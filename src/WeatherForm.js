@@ -12,7 +12,7 @@ class WeatherForm extends Component {
                     value={city}
                     placeholder="Enter city Name"
                     className="form-control"
-                    autofocus="autofocus"
+                    autoFocus="autofocus"
                     onChange={handleChange}
                 />
                 <small className="text-danger" style={{ "textTransform": "uppercase" }}>{error}</small><br/>

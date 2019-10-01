@@ -3,7 +3,37 @@ import { Row, Col, Table, Card } from 'react-bootstrap';
 import moment from 'moment';
 import WeatherForm from './WeatherForm';
 import emptyImg from './assests/Error-b.png'
-import emptyCloud from './assests/empty-cloud.svg'
+// import emptyCloud from './assests/empty-cloud.svg'
+import ContentLoader, { Facebook } from 'react-content-loader'
+
+const MyFacebookLoader = () => <Facebook />
+
+const Loader = props => {
+    const random = Math.random() * (1 - 0.7) + 0.7;
+    return (
+        <ContentLoader
+            height={40}
+            width={1060}
+            speed={1}
+            primaryColor="#d9d9d9"
+            secondaryColor="#ecebeb"
+            {...props}
+        >
+            <rect x="30" y="15" rx="4" ry="4" width="6" height="6.4" />
+            <rect x="64" y="13" rx="6" ry="6" width={200 * random} height="12" />
+            <rect x="643" y="13" rx="6" ry="6" width={23 * random} height="12" />
+            <rect x="683" y="13" rx="6" ry="6" width={78 * random} height="12" />
+            <rect x="785" y="13" rx="6" ry="6" width={117 * random} height="12" />
+            <rect x="968" y="13" rx="6" ry="6" width={83 * random} height="12" />
+
+            <rect x="0" y="39" rx="6" ry="6" width="1060" height=".3" />
+        </ContentLoader>
+    );
+};
+
+const LoaderList = ['a', 'b', 'c', 'd', 'e', 'f', 2].map((item, index) => <div key={index}> < Loader /> </div>);
+
+
 
 
 class WeatherCard extends Component {
@@ -71,17 +101,20 @@ class WeatherCard extends Component {
                                     <>
                                         {loading ?
                                             <>
-                                                <div className="d-flex justify-content-center aligh-item-center w-100 mt-5 pt-5">
+                                                <div className="w-100 ml-3 mt-5">
+                                                    <MyFacebookLoader />
+                                                </div>
+                                                {/* <div className="d-flex justify-content-center aligh-item-center w-100 mt-5 pt-5">
                                                     <div className="spinner-border" role="status">
                                                         <span className="sr-only">Loading...</span>
                                                     </div>
-                                                </div>
+                                                </div> */}
                                             </>
                                             : ''
 
                                         }
                                     </>
-                                    {!data && !loading?
+                                    {!data && !loading ?
                                         <>
                                             <div className="justify-content-center d-flex"><img src={emptyImg} alt="" style={{ "width": "50%" }} /></div>
                                             <div className="justify-content-center d-flex w-100"><h5>Check Your Conction and Try Again</h5></div>
@@ -100,8 +133,7 @@ class WeatherCard extends Component {
                                     <div className="force-overflow">
                                         <Table className="table-responsive w-100">
                                             {
-                                                forecastGroup.length ?
-
+                                                forecastGroup && forecastGroup.length && !loading ?
                                                     forecastGroup.map((forcast, index) => {
                                                         let keys = Object.keys(forcast);
                                                         return <tbody key={index}>
@@ -148,19 +180,26 @@ class WeatherCard extends Component {
                                                             }
                                                         </tbody>
                                                     })
-
-                                                    :
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>
-                                                                <img src={emptyCloud} alt="" style={{ 'width': '80%' }} />
-                                                                <h6>There is no any forcast</h6>
-
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
+                                                    : <tbody><tr><td></td></tr></tbody>
                                             }
                                         </Table>
+                                        {
+                                            loading &&
+                                            <Table>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            {/* <img src={emptyCloud} alt="" style={{ 'width': '80%' }} />
+                                                            <h6>There is no any forcast</h6> */}
+                                                            <div className="w-100 mt-5">
+                                                                {LoaderList}
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </Table>
+                                        }
+
                                     </div>
                                 </div>
                             </Col>
