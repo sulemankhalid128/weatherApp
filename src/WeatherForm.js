@@ -5,7 +5,7 @@ class WeatherForm extends Component {
     static contextType = WeatherContext;
     render() {
 
-        let { country, city, error, loading } = this.context.state
+        let { country, city, errormsg, loading } = this.context.state
         return (
             <form>
                 <label htmlFor="" className="form-group">City</label>
@@ -17,7 +17,7 @@ class WeatherForm extends Component {
                     autoFocus="autofocus"
                     onChange={this.context.handleChange}
                 />
-                <small className="text-danger" style={{ "textTransform": "uppercase" }}>{error}</small><br/>
+                <small className="text-danger" style={{ "textTransform": "uppercase" }}>{errormsg}</small><br/>
                 <label htmlFor="" className="form-group mt-3">Country</label>
                 <input type="text"
                     name="country"
