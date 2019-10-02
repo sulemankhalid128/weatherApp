@@ -80,11 +80,21 @@
     border-radius: 10px;
   }
 
+  .content-center{
+      justify-content: center;
+      align-content: center;
+      display: flex
+  }
+
 
   .dateforcast{
       width: 130px !important;
   }
 
+  .iconsTr{
+      width: 75px;
+      text-align: center;
+  }
   
 
   @media screen and (max-width: 740px){

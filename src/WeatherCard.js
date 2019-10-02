@@ -134,7 +134,7 @@ class WeatherCard extends Component {
                                 <h4 className="mb-4">Forecast</h4>
                                 <div className="scroller">
                                     <div className="force-overflow">
-                                        <Table className="table-responsive w-100">
+                                        <Table className="table-responsive w-100 ">
                                             {
                                                 forecastGroup && forecastGroup.length && !loading ?
                                                     forecastGroup.map((forcast, index) => {
@@ -148,14 +148,14 @@ class WeatherCard extends Component {
                                                             <tr>
                                                                 <th>Weather</th>
                                                                 <th>Description</th>
-                                                                <th>Icon</th>
+                                                                <th className="iconsTr">Icon</th>
                                                                 <th>Time</th>
                                                                 <th>Wind</th>
                                                                 <th>Humidity</th>
                                                                 <th>Max Temp</th>
                                                                 <th>Min Temp</th>
                                                                 <th>Pressure</th>
-                                                                <th>Temp KF</th>
+                                                                {/* <th>Temp KF</th> */}
                                                                 <th>Clouds</th>
                                                             </tr>
                                                             {
@@ -165,14 +165,14 @@ class WeatherCard extends Component {
                                                                             <>
                                                                                 <td>{v.weather[0].main}</td>
                                                                                 <td>{v.weather[0].description}</td>
-                                                                                <td><img src={`http://openweathermap.org/img/wn/${v.weather[0].icon}@2x.png`} width="40px" alt="" /> </td>
+                                                                                <td className="content-center"><img src={`http://openweathermap.org/img/wn/${v.weather[0].icon}@2x.png`} width="40px" alt="" /> </td>
                                                                                 <td>{moment(v.dt * 1000).format('hh:mm A')}</td>
-                                                                                <td>{v.wind.speed}</td>
+                                                                                <td className="text-center">{v.wind.speed}</td>
                                                                                 <td className="text-center">{v.main.humidity}</td>
-                                                                                <td className="text-center">{Math.round(v.main.temp_max - 273.15)} &#8451;</td>
-                                                                                <td className="text-center">{Math.round(v.main.temp_min - 273.15)} &#8451;</td>
+                                                                                <td className="text-center">{Math.round(v.main.temp_max - 273.15)}&#8451;</td>
+                                                                                <td className="text-center">{Math.round(v.main.temp_min - 273.15)}&#8451;</td>
                                                                                 <td className="text-center">{Math.round(v.main.pressure)}</td>
-                                                                                <td className="text-center">{v.main.temp_kf}</td>
+                                                                                {/* <td className="text-center">{v.main.temp_kf}</td> */}
                                                                                 <td className="text-center">{v.clouds.all}</td>
 
 
