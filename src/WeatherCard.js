@@ -6,6 +6,8 @@ import emptyImg from './assests/Error-b.png'
 // import emptyCloud from './assests/empty-cloud.svg'
 import ContentLoader, { Facebook } from 'react-content-loader'
 
+import {WeatherContext} from './WeatherIdex'
+
 const MyFacebookLoader = () => <Facebook />
 
 const Loader = props => {
@@ -37,8 +39,9 @@ const LoaderList = ['a', 'b', 'c', 'd', 'e', 'f', 2].map((item, index) => <div k
 
 
 class WeatherCard extends Component {
+    static contextType = WeatherContext;
     render() {
-        let { data, loading, weather, main, forecastGroup } = this.props
+        let { data, loading, weather, main, forecastGroup } = this.context.state
         return (
             <div>
                 <Card className="border-0 shadow-sm">
@@ -123,7 +126,7 @@ class WeatherCard extends Component {
                                 </Row>
                             </Col>
                             <Col md="6  border-left">
-                                <WeatherForm props={this.props} />
+                                <WeatherForm/>
                             </Col>
                         </Row>
                         <Row className="mt-4">

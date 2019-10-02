@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import WeatherCard from './WeatherCard';
 import { groupBy } from 'lodash';
 import moment from 'moment';
+const WeatherContext = React.createContext({});
 
 
 class WeatherIdex extends Component {
@@ -29,10 +29,10 @@ class WeatherIdex extends Component {
     }
 
     forecast = async () => {
-        this.setState({loading: true})
+        this.setState({ loading: true })
         let res = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${this.state.city},${this.state.country}&appid=c768480df4e7ec64901ea68f0e5fda9c`)
         let forecast = await res.json();
-        this.setState({loading: false})
+        this.setState({ loading: false })
         if (res.status !== 200) {
             throw forecast;
 
@@ -107,29 +107,22 @@ class WeatherIdex extends Component {
 
 
     render() {
-        let { className, color, city, country, forecastGroup, data, weather, main, loading, errormsg } = this.state
+        let { className, color, city } = this.state
         return (
-            <>
+            <WeatherContext.Provider value={{
+                state: this.state,
+                handleChange : this.handleChange,
+                handleSubmit: this.handleSubmit
+            }}>
                 <div className={className} id='header' style={{ color: color }}>
                     <h1 className="text-center pt-5 h-color-small" id="heading">Weather App</h1>
                     <h5 className="text-center h-color-small">Search for weather updates</h5>
                     <p className="text-center mb-0 pb-5 h-color-small" style={{ "textTransform": "uppercase" }}>{city}</p>
                 </div>
-                <WeatherCard
-                    forecastGroup={forecastGroup}
-                    data={data}
-                    weather={weather}
-                    main={main}
-                    country={country}
-                    loading={loading}
-                    city={city}
-                    handleChange={this.handleChange}
-                    handleSubmit={this.handleSubmit}
-                    error={errormsg}
-                />
-            </>
+                {this.props.children}
+            </WeatherContext.Provider>
         );
     }
 }
 
-export default WeatherIdex;
+export { WeatherIdex, WeatherContext };
