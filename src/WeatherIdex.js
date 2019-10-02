@@ -84,13 +84,11 @@ class WeatherIdex extends Component {
 
     timesloat = async () => {
         try {
-            console.log('night')
             let hours = new Date().getHours()
             if (hours < 5 || hours >= 18) {
                 this.setState({ className: "bgNight", color: 'white' })
             }
             else if (hours >= 5) {
-                console.log('day');
                 this.setState({ className: "bgImg" })
             }
 
