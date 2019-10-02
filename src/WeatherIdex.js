@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import WeatherCard from './WeatherCard';
 import { groupBy } from 'lodash';
 import moment from 'moment';
+import {Link} from 'react-router-dom'
+import { Container } from 'react-bootstrap'
 
 
 class WeatherIdex extends Component {
@@ -29,10 +31,10 @@ class WeatherIdex extends Component {
     }
 
     forecast = async () => {
-        this.setState({loading: true})
+        this.setState({ loading: true })
         let res = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${this.state.city},${this.state.country}&appid=c768480df4e7ec64901ea68f0e5fda9c`)
         let forecast = await res.json();
-        this.setState({loading: false})
+        this.setState({ loading: false })
         if (res.status !== 200) {
             throw forecast;
 
@@ -109,11 +111,12 @@ class WeatherIdex extends Component {
     render() {
         let { className, color, city, country, forecastGroup, data, weather, main, loading, errormsg } = this.state
         return (
-            <>
+            <Container>
                 <div className={className} id='header' style={{ color: color }}>
                     <h1 className="text-center pt-5 h-color-small" id="heading">Weather App</h1>
                     <h5 className="text-center h-color-small">Search for weather updates</h5>
                     <p className="text-center mb-0 pb-5 h-color-small" style={{ "textTransform": "uppercase" }}>{city}</p>
+                    <Link to='/contextPage' className="text-light">Context Page</Link>
                 </div>
                 <WeatherCard
                     forecastGroup={forecastGroup}
@@ -127,7 +130,7 @@ class WeatherIdex extends Component {
                     handleSubmit={this.handleSubmit}
                     error={errormsg}
                 />
-            </>
+            </Container>
         );
     }
 }
